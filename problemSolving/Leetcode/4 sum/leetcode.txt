@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> ans;
+        int n = nums.size();
+
+        // ১. অ্যারে সর্ট করা
+        sort(nums.begin(), nums.end());
+
+        // ২. প্রথম পয়েন্টার (i)
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) continue; // i-এর ডুপ্লিকেট স্কিপ
+
+            // ৩. দ্বিতীয় পয়েন্টার (j)
+            for (int j = i + 1; j < n; j++) {
+                if (j > i + 1 && nums[j] == nums[j-1]) continue; // j-এর ডুপ্লিকেট স্কিপ
+
+                // ৪. টু-পয়েন্টার পদ্ধতি (p এবং q)
+                int p = j + 1, q = n - 1;
+
+                while (p < q) {
+                    long long sum = (long long)nums[i] + (long long)nums[j] + (long long)nums[p] + (long long)nums[q];
+                    
+                    if (sum < target) {
+                        p++;
+                    } else if (sum > target) {
+                        q--;
+                    } else {
+                        // সঠিক কম্বিনেশন পুশ করা
+                        ans.push_back({nums[i], nums[j], nums[p], nums[q]});
+                        
+                        // p এবং q-এর ডুপ্লিকেট উপাদান স্কিপ করা
+                        while (p < q && nums[p] == nums[p+1]) p++;
+                        while (p < q && nums[q] == nums[q-1]) q--;
+                        
+                        p++; 
+                        q--;
+                    }
+                }
+            }
+        }
+        // ৫. সঠিক উত্তর রিটার্ন করা
+        return ans; 
+    }
+};
